@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Project.Controllers
 {
     [ApiController]
-    [Route("api/students")]
+    [Route("api/users")]
     [Authorize]
     public class UsersController : ControllerBase
     {
@@ -35,6 +35,20 @@ namespace Project.Controllers
             var jwtToken = userService.Validate(payload);
 
             return Ok(new { token = jwtToken });
+        }
+
+        [HttpGet("Student-getGrades")]
+        [Authorize(Roles = "Student")]
+        public ActionResult<string> GetStudentGrades()
+        {
+            return Ok("Hello students!");
+        }
+
+        [HttpGet("Teacher-getGrades")]
+        [Authorize(Roles = "Teacher")]
+        public ActionResult<string> GetAllStudentGrades()
+        {
+            return Ok("Hello teacher!");
         }
 
     }

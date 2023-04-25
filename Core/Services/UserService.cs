@@ -19,10 +19,6 @@ namespace Core.Services
             this.authService = authService;
         }
 
-        public void InitRoles()
-        {
-
-        }
         public void Register(RegisterDto registerData)
         {
             if (registerData == null)
@@ -38,7 +34,7 @@ namespace Core.Services
                 {
                     UserName = registerData.UserName,
                     PasswordHash = hashedPassword,
-                    StudentId = registerData.StudentId,
+                    StudentId = null,
                     Role = "Teacher"
                 };
             }
@@ -57,15 +53,18 @@ namespace Core.Services
         }
         public string Validate(LoginDto payload)
         {
-            var student = unitOfWork.Users.GetByUserName(payload.UserName);
-
-            var passwordFine = authService.VerifyHashedPassword(student.PasswordHash, payload.Password);
+            var user = unitOfWork.Users.GetByUserName(payload.UserName);
+            if (user == null)
+            {
+                return null;
+            }
+            var passwordFine = authService.VerifyHashedPassword(user.PasswordHash, payload.Password);
 
             if (passwordFine)
             {
-                var role = unitOfWork.Users.GetRoleByUserName(student.UserName).ToString();
+                var role = unitOfWork.Users.GetRoleByUserName(user.UserName).ToString();
 
-                return authService.GetToken(student, role);
+                return authService.GetToken(user, role);
             }
             else
             {
