@@ -4,6 +4,8 @@ namespace DataLayer
 {
     public class UnitOfWork
     {
+        public UsersRepository Users { get; }
+
         public StudentsRepository Students { get; }
         public ClassRepository Classes { get; }
 
@@ -13,12 +15,14 @@ namespace DataLayer
         (
             AppDbContext dbContext,
             StudentsRepository studentsRepository,
-            ClassRepository classes
+            ClassRepository classes,
+            UsersRepository usersRepository
         )
         {
             _dbContext = dbContext;
             Students = studentsRepository;
             Classes = classes;
+            Users = usersRepository;
         }
 
         public void SaveChanges()

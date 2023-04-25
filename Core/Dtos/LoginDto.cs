@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataLayer.Entities
+namespace Core.Dtos
 {
-    public class Role : BaseEntity
+    public class LoginDto
     {
-        public int RoleName { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

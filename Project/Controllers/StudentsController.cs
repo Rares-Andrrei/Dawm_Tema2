@@ -2,6 +2,7 @@
 using Core.Services;
 using DataLayer.Dtos;
 using DataLayer.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Project.Controllers
@@ -88,5 +89,9 @@ namespace Project.Controllers
 
             return Ok(results);
         }
+
+
+
+
     }
 }

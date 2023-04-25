@@ -9,8 +9,9 @@ namespace DataLayer.Entities
     public class User : BaseEntity
     {
         public string UserName { get; set; }
-        public string Password { get; set; }
-        public int RoleId { get; set; }
-        public Role UserRole { get; set; }
+        public string PasswordHash { get; set; }
+        public string Role { get; set; }
+        public int StudentId { get; set; } //null daca rolul este profesor
+        public Student Student { get; set; }
     }
 }

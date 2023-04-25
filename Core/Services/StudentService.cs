@@ -94,6 +94,6 @@ namespace Core.Services
             var results = unitOfWork.Students.GetGroupedStudents();
 
             return results;
-        }
+        }   
     }
 }
