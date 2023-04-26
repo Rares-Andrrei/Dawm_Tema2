@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Core.Services
 {
@@ -70,7 +71,10 @@ namespace Core.Services
             {
                 return null;
             }
-
+        }
+        public int GetStudentId(int userId)
+        {
+            return unitOfWork.Users.GetById(userId).StudentId.Value;
         }
 
     }

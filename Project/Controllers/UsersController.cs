@@ -4,6 +4,8 @@ using DataLayer.Dtos;
 using DataLayer.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace Project.Controllers
 {
@@ -13,11 +15,13 @@ namespace Project.Controllers
     public class UsersController : ControllerBase
     {
         private UserService userService { get; set; }
+        private StudentService studentService { get; set; }
 
 
-        public UsersController(UserService userService)
+        public UsersController(UserService userService, StudentService studentService)
         {
             this.userService = userService;
+            this.studentService = studentService;
         }
 
         [HttpPost("/register")]
@@ -39,16 +43,26 @@ namespace Project.Controllers
 
         [HttpGet("Student-getGrades")]
         [Authorize(Roles = "Student")]
-        public ActionResult<string> GetStudentGrades()
+        public ActionResult<GradesByStudent> GetStudentGrades()
         {
-            return Ok("Hello students!");
+            var authorizationHeader = HttpContext.Request.Headers["Authorization"];
+            var tokenString = authorizationHeader.ToString().Split(' ')[1];
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(tokenString);
+            var userId = token.Claims.First(claim => claim.Type == "userId").Value;
+
+            int studentd = userService.GetStudentId(int.Parse(userId));
+            var result = studentService.GetStudentGrades(studentd);
+
+            return Ok(result);
         }
 
         [HttpGet("Teacher-getGrades")]
         [Authorize(Roles = "Teacher")]
-        public ActionResult<string> GetAllStudentGrades()
+        public ActionResult<AllStudentsGradesDto> GetAllStudentGrades()
         {
-            return Ok("Hello teacher!");
+            var result = studentService.GetAllStudentGrades();
+            return Ok(result);
         }
 
     }

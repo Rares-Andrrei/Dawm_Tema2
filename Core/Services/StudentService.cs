@@ -95,5 +95,20 @@ namespace Core.Services
 
             return results;
         }   
+
+        public GradesByStudent GetStudentGrades(int studentId)
+        {
+            Student student = unitOfWork.Students.GetById(studentId);
+            if (student != null)
+            {
+                return new GradesByStudent(student);
+            }
+            return null;
+        }
+        public AllStudentsGradesDto GetAllStudentGrades()
+        {
+            return new AllStudentsGradesDto(unitOfWork.Students.GetAll());
+        }
+
     }
 }
